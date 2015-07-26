@@ -1,0 +1,119 @@
+
+
+cd /c/_tmp/INET/inet/examples/emulation/lxsensortest
+
+---------------------
+
+
+External Server <----> [ext0] ROUTER [ppp0] <----> [ppp0] Standard Host
+
+
+
+Links:
+
+
+http://stackoverflow.com/questions/29243890/how-external-interfaces-work-in-omnetpp-inet
+https://groups.google.com/forum/#!topic/omnetpp/MHqZOaWEwdQ
+
+
+Ext interfaces OMNet++/INET:
+http://www.mingw.org/
+https://omnetpp.org/doc/omnetpp/InstallGuide.pdf
+
+
+Winsock 2:
+https://msdn.microsoft.com/en-us/library/windows/desktop/ms741416(v=vs.85).aspx
+
+Raw sockets/PCAP on Windows:
+http://www.binarytides.com/raw-sockets-packets-with-winpcap/
+
+C/C++ sockets, TCP Linux:
+http://www.scs.stanford.edu/07wi-cs244b/refs/net2.pdf
+
+
+
+--------------
+
+
+1-0. Install winpcap
+
+1. copy 
+
+libpcap.a
+
+from
+
+C:\Software\omnetpp-4.6\tools\win32\usr\lib
+
+to
+
+C:\Software\omnetpp-4.6\tools\win32\mingw32\lib\
+
+2. In file C:\_TMP\INET\inet\src\makefrag:
+
+# if you want to use external interfaces with inet, you should install
+# winpcap (on windows) or libpcap-dev (on linux) and re-run ./configure in
+# the omnetpp root directory and comment out the following line:
+HAVE_PCAP=yes
+
+3. Run mingwenv.cmd in the omnetpp-4.6 directory AS ADMINISTRATOR.
+
+cd C:\Software\omnetpp-4.6\
+
+mingwenv.cmd
+
+
+4. Compile omnet with winpcap 
+
+cd /c/Software/omnetpp-4.6
+
+$ make cleanall
+
+$ ./configure
+
+Note that it says:
+
+checking for PCAP with CFLAGS=" -O2 -DNDEBUG=1   -I/usr/include -fno-stack-protector " LIBS="-lpcap"... yes
+
+$ make MODE=debug
+
+$exit
+
+5. Compile INET with PCAP
+
+cd /c/_tmp/INET/inet
+
+$ make cleanall 
+
+$ make makefiles
+
+$ make MODE=debug
+
+
+5. Run the INET examples
+
+cd /c/_tmp/INET/inet/examples/emulation/traceroute
+
+or
+
+cd /c/_tmp/INET/inet/examples/emulation/extclient
+
+or
+
+cd /c/_tmp/INET/inet/examples/emulation/lxsensortest
+
+./run
+
+C:\_TMP\INET\inet\src\linklayer\ext
+cSocketRTScheduler 
+error: couldn't set sockopt for raw socket
+
+
+
+
+
+
+
+
+
+
